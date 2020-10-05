@@ -1,12 +1,13 @@
+# DO NOT EDIT
 
-
-# Replace this file!
+# Assignment for 18yw85
 
 from lib204 import wff
 P, Q, R, S, T = map(wff.Variable, 'PQRST')
-s1 = P
-s2 = Q
-s3 = R
-s4 = S
-s5 = T
-s6 = P
+s1 = (P|(R|S))
+s2 = ((~R|~P)&(P|~R))
+s3 = (~P|(~R|~S))
+s4 = ((~S|~R)&(S|~R))
+
+s5 = ((~S>>(R&~P))|~(P|~S))
+s6 = ((P>>S)>>(R|(S&~P)))

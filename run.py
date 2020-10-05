@@ -38,19 +38,14 @@ print(" s6: %s" % s6)
 #     theories. These are two wrong answers, but they give you an idea of how
 #     to write your response.
 
-q1b = [ [s1,s2,s3,s4] ] # they are all equivalent.
-#q1b = [ [s1], [s2], [s3], [s4] ] # they are all different
-#q1b = ??? # the right answer please!
+q1b = [ [s1],[s2],[s3,s4] ] 
 
 # (c) Variable q1c should be a dictionary mapping variables to True or False.
 #     Use only what you need of P, Q, R, S, T. An example (almost certainly
 #     incorrect) answer is given as an example.
 q1c = {
     P: True,
-    Q: False,
     R: True,
-    S: False,
-    T: True
 }
 
 
@@ -68,8 +63,8 @@ print("s5 = %s" % s5.dump('python'))
 print("s6 = %s" % s6.dump('python'))
 
 # replace the following two lines with what the above code prints
-s5 = ~(P | Q)
-s6 = (P & Q) | R
+s5 = ((~S>>(R&~P))|~(P|~S))
+s6 = ((P>>S)>>(R|(S&~P)))
 
 # (a) Put the parse trees inside folder Q2a. You can do it on paper and take a
 #     photo, or use drawing software. This will not be marked unless requested,
@@ -87,12 +82,19 @@ s6 = (P & Q) | R
 #      - etc.
 
 s5nnf = [
-    [~(P | Q), 'starting formula'],
-    [~P & ~Q, 'de Morgans']
+    [((~S>>(R&~P))|~(P|~S)), 'starting formula'],
+    [((~~S|(R&~P))|~(P|~S)) , 'de Morgans'],
+    [((S|(R&~P))|~(P|~S)), 'double negation'],
+    [((S|(R&~P))|(~P&~~S)), 'de Morgans'],
+    [((S|(R&~P))|(~P&S)), 'double negation']
 ]
 
 s6nnf = [
-    [(P & Q) | R, 'starting formula -- already in negation normal form']
+    [((P>>S)>>(R|(S&~P))), 'starting formula'],
+    [((~P|S)>>(R|(S&~P))), 'de Morgan'],
+    [(~(~P|S)|(R|(S&~P))), 'de Morgan'],
+    [((~~P&~S)|(R|(S&~P))), 'de Morgan'],
+    [((P&~S)|(R|(S&~P))), 'double negation']
 ]
 
 
@@ -102,13 +104,22 @@ s6nnf = [
 #     an explanation for each step. Possible explanations are listed above.
 
 s5cnf = [
-    [~(P | Q), 'starting formula'],
-    [~P & ~Q, 'de Morgans']
+    [((~S>>(R&~P))|~(P|~S)), 'starting formula'],
+    [((~~S|(R&~P))|~(P|~S)) , 'de Morgans'],
+    [((S|(R&~P))|~(P|~S)), 'double negation'],
+    [((S|(R&~P))|(~P&~~S)), 'de Morgans'],
+    [((S|(R&~P))|(~P&S)), 'double negation'],
+    [(~P&S)|(S|(R&~P)), 'communtativity'],
+    [((~P|(S|(R&~P)))&(S|(S|(R&~P)))), 'distribution']
 ]
 
 s6cnf = [
-    [(P & Q) | R, 'starting formula'],
-    [(P | R) & (Q | R), 'distribution']
+    [((P>>S)>>(R|(S&~P))), 'starting formula'],
+    [((~P|S)>>(R|(S&~P))), 'de Morgan'],
+    [(~(~P|S)|(R|(S&~P))), 'de Morgan'],
+    [((~~P&~S)|(R|(S&~P))), 'de Morgan'],
+    [((P&~S)|(R|(S&~P))), 'double negation'],
+    [((P|(R|(S&~P)))&(~S|(R|(S&~P)))),'distribution']
 ]
 
 
@@ -120,17 +131,27 @@ s6cnf = [
 # e.g., s5 = ~(P | Q)
 s5tseitin = semantic_interface.Encoding()
 # first argument is the formula; second is the variable name.
-x1 = s5tseitin.tseitin(P | Q, 'x1')
-x2 = s5tseitin.tseitin(~x1, 'x2')
+x1 = s5tseitin.tseitin(~P, 'x1')
+x2 = s5tseitin.tseitin(~S, 'x2')
+x3 = s5tseitin.tseitin(R&x1, 'x3')
+x4 = s5tseitin.tseitin(R|x2, 'x4')
+x5 = s5tseitin.tseitin(~S, 'x5')
+x6 = s5tseitin.tseitin(x5>>x3, 'x6')
+x7 = s5tseitin.tseitin(~x4, 'x7')
+x8 = s5tseitin.tseitin(x6|x7, 'x8')
+
 # This final step is required -- use your last variable, corresponding to the top
 #  of the parse tree, to finalize your Tseitin encoding.
-s5tseitin.finalize(x2)
+s5tseitin.finalize(x8)
 
 # e.g., s6 = (P & Q) | R
 s6tseitin = semantic_interface.Encoding()
-x1 = s6tseitin.tseitin(P & Q, 'x1')
-x2 = s6tseitin.tseitin(x1 | R, 'x2')
-s6tseitin.finalize(x2)
+x1 = s6tseitin.tseitin(~P, 'x1')
+x2 = s6tseitin.tseitin(S&x1, 'x2')
+x3 = s6tseitin.tseitin(R|x2, 'x3')
+x4 = s6tseitin.tseitin(P>>S, 'x4')
+x5 = s6tseitin.tseitin(x4>>x3, 'x5')
+s6tseitin.finalize(x5)
 
 
 
