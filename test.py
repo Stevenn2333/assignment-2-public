@@ -1,6 +1,6 @@
 
 from lib204 import wff, semantic_interface
-test_submission()
+
 try:
     from run import *
 except:
