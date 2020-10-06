@@ -41,3 +41,4 @@ def test_submission():
     assert isinstance(s5tseitin, semantic_interface.Encoding), "s5tseitin should be a semantic_interface.Encoding object"
     assert isinstance(s6tseitin, semantic_interface.Encoding), "s6tseitin should be a semantic_interface.Encoding object"
 
+test_submission()
