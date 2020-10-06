@@ -83,7 +83,7 @@ s6 = ((P>>S)>>(R|(S&~P)))
 
 s5nnf = [
     [((~S>>(R&~P))|~(P|~S)), 'starting formula'],
-    [((~~S|(R&~P))|~(P|~S)) , 'de Morgans'],
+    [((~~S|(R&~P))|~(P|~S)) , 'remove implications'],
     [((S|(R&~P))|~(P|~S)), 'double negation'],
     [((S|(R&~P))|(~P&~~S)), 'de Morgans'],
     [((S|(R&~P))|(~P&S)), 'double negation']
@@ -91,8 +91,8 @@ s5nnf = [
 
 s6nnf = [
     [((P>>S)>>(R|(S&~P))), 'starting formula'],
-    [((~P|S)>>(R|(S&~P))), 'de Morgan'],
-    [(~(~P|S)|(R|(S&~P))), 'de Morgan'],
+    [((~P|S)>>(R|(S&~P))), 'remove implications'],
+    [(~(~P|S)|(R|(S&~P))), 'remove implications'],
     [((~~P&~S)|(R|(S&~P))), 'de Morgan'],
     [((P&~S)|(R|(S&~P))), 'double negation']
 ]
@@ -105,7 +105,7 @@ s6nnf = [
 
 s5cnf = [
     [((~S>>(R&~P))|~(P|~S)), 'starting formula'],
-    [((~~S|(R&~P))|~(P|~S)) , 'de Morgans'],
+    [((~~S|(R&~P))|~(P|~S)) , 'remove implications'],
     [((S|(R&~P))|~(P|~S)), 'double negation'],
     [((S|(R&~P))|(~P&~~S)), 'de Morgans'],
     [((S|(R&~P))|(~P&S)), 'double negation'],
@@ -115,8 +115,8 @@ s5cnf = [
 
 s6cnf = [
     [((P>>S)>>(R|(S&~P))), 'starting formula'],
-    [((~P|S)>>(R|(S&~P))), 'de Morgan'],
-    [(~(~P|S)|(R|(S&~P))), 'de Morgan'],
+    [((~P|S)>>(R|(S&~P))), 'remove implications'],
+    [(~(~P|S)|(R|(S&~P))), 'remove implications'],
     [((~~P&~S)|(R|(S&~P))), 'de Morgan'],
     [((P&~S)|(R|(S&~P))), 'double negation'],
     [((P|(R|(S&~P)))&(~S|(R|(S&~P)))),'distribution']
