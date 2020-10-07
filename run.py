@@ -46,6 +46,7 @@ q1b = [ [s1],[s2],[s3],[s4] ]
 q1c = {
     P: False,
     R: True,
+    S: True
 }
 
 
